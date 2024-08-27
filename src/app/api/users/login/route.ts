@@ -11,7 +11,6 @@ export async function POST(request: NextRequest) {
         const reqbody = await request.json()
         const { email, password } = reqbody;
         //validation
-        console.log(email, password);
 
         const user = await User.findOne({ email })
         if (!user) {
@@ -47,7 +46,6 @@ export async function POST(request: NextRequest) {
         })
         return response
     } catch (error: any) {
-        console.log("Error: ", error);
         return NextResponse.json({
             error: error.message
         }, { status: 500 })

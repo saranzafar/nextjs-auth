@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { toast } from 'react-hot-toast'
+import toast, { Toaster } from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
@@ -13,18 +13,19 @@ export default function LoginPage() {
     const [buttonDisabled, setButtonDisabled] = useState(true)
     const [loading, setLoading] = useState(false)
     const router = useRouter()
+    let toastId: any;
 
     const onLogin = async () => {
         try {
             setLoading(true)
+            toastId = toast.loading('Processing...');
             const response = await axios.post("/api/users/login", user)
-            console.log("Signup Success", response.data)
             router.push("/")
         } catch (error: any) {
-            console.log("Signup failed")
-            toast.error(error.message)
+            toast.error(error.response.data.error)
         } finally {
             setLoading(false)
+            toast.dismiss(toastId);
         }
     }
 
@@ -38,6 +39,7 @@ export default function LoginPage() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
+            <Toaster />
             <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
                 <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
                 <div className="space-y-4">
@@ -76,7 +78,7 @@ export default function LoginPage() {
                     </button>
                 </div>
                 <p className="text-center text-sm text-gray-600 mt-4">
-                    Don't have an account? <a href="/login" className="text-indigo-600 hover:text-indigo-500">Create Account</a>
+                    Don't have an account? <a href="/signup" className="text-indigo-600 hover:text-indigo-500">Create Account</a>
                 </p>
             </div>
         </div>

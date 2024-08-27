@@ -28,7 +28,6 @@ export async function POST(request: NextRequest) {
             password: hashedPassword
         })
         const savedUser = await newUser.save()
-        console.log("savedUser: ", savedUser);
 
         // send verification meail
         await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id })
@@ -40,7 +39,6 @@ export async function POST(request: NextRequest) {
             savedUser
         })
     } catch (error: any) {
-        console.log("Error: ", error);
         return NextResponse.json({
             error: error.message
         }, { status: 500 })

@@ -10,7 +10,6 @@ export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json()
         const { token } = reqBody
-        console.log("TOKEN: ", token);
         if (!token) {
             return NextResponse.json({
                 error: "Token not found"
